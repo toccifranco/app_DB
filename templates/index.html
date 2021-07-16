@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block body%}
+
+{% with messeges =get_flashed_messages() %}<!--retorna los msg que se mandan del servidor-->
+{% if messeges %}
+{% for messege in messeges %}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{messege}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+<form action="/add_contact" method="POST"><!--enviamos el formulario a la ruta /add_contact a travez del metodo get-->
+  <input type="text" name="fullname" placeholder="nombre">
+  <input type="text" name="phone" placeholder="telefono">
+  <input type="text" name="email" placeholder="email">
+  <button type="submit">
+    Guardar
+  </button>
+</form>
+
+<table>
+  <thead>
+    <tr>
+      <td>Nombre</td>
+      <td>Telefono</td>
+      <td>Email</td>
+      <td>Operaciones</td>
+    </tr>
+  </thead>
+  <tbody>
+    {%  for contact in contacts %}<!--le paso los id a la tabla-->
+      <tr>
+        <td>{{contact.1}}</td>
+        <td>{{contact.2}}</td>
+        <td>{{contact.3}}</td>
+        <td>
+          <a href="/edit/{{contact.0}}">editar</a>
+          <a href="/delete/{{contact.0}}">eliminar</a>
+        </td>
+      </tr>
+    {%  endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
